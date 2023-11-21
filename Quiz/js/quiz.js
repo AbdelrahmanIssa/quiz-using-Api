@@ -6,7 +6,7 @@ export class Quiz {
         this.score = 0;
         this.total = deliveryQApi.length;
         this.isCorrect;
-        
+
         // Get submit button and add click event listener
         this.submitBtn = document.getElementById("submit");
         this.submitBtn.addEventListener("click", () => this.submitAnswer());
@@ -57,13 +57,17 @@ export class Quiz {
     submitAnswer() {
         // Check the submitted answer
         this.checkAnswer();
-
-        // Move to the next question or finish the quiz
-        this.current++;
-        if (this.current < this.total) {
-            this.showQ();
+        if (this.userAnswer != undefined) {
+            this.checkAnswer();
+            this.current++;
+            if (this.current < this.total) {
+                this.showQ();
+            } else {
+                this.finish();
+            }
         } else {
-            this.finish();
+            // Display alert for no selected answer
+            this.displayMessage("alert");
         }
     }
 
@@ -71,6 +75,7 @@ export class Quiz {
         // Get the selected answer
         this.answerElement = document.getElementsByName("answer");
         this.correctAnswer = this.deliveryQApi[this.current].correct_answer;
+        console.log(this.correctAnswer);
         this.userAnswer = Array.from(this.answerElement).find(el => el.checked);
 
         if (this.userAnswer != undefined) {
@@ -84,9 +89,6 @@ export class Quiz {
                 this.isCorrect = false;
                 this.displayMessage("inCorrect");
             }
-        } else {
-            // Display alert for no selected answer
-            this.displayMessage("alert");
         }
     }
 
